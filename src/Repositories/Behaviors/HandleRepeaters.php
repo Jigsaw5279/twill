@@ -651,10 +651,14 @@ trait HandleRepeaters
         return $fields;
     }
 
-    private function decodePivotField(?string $data): null|array|string
+    private function decodePivotField($data): null|array|string
     {
         if (! $data) {
             return null;
+        }
+
+        if(version_compare(phpversion(), '8.1.0', '>=') && $data instanceof \BackedEnum) {
+            return $data->value;
         }
 
         try {
